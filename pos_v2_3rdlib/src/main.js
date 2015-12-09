@@ -1,69 +1,56 @@
 //TODO: Please write code in this file.
 function infodeal_1(inputs){//输入数据处理1,提取商品编码和数字
-    var input_temp=[];
-    for(var i=0;i<inputs.length;i++){
-        input_temp[i]={barcode:inputs[0],num:0};
-        if(inputs[i].indexOf("-")<0){
-            input_temp[i].barcode=inputs[i];
-            input_temp[i].num=1;
+    var input_temp=[]; //var input_temp=_.fill(Array(inputs.length), {barcode:inputs[0],num:0});//只有数字是复制的，字符串本质不可更改，因此表现也可以认为没有很大差别，但对象是默认为引用
+    input_temp=_.map(inputs,function(n){
+        if(n.indexOf("-")>0){
+            itemp=n.split('-');
+            return {barcode:itemp[0],num:Number(itemp[1])};
+        }else{
+            return{barcode:n,num:1};
         }
-        else{
-            input_temp[i].barcode=inputs[i].substring(0,inputs[i].indexOf("-"))
-            input_temp[i].num=Number(inputs[i].substring(inputs[i].indexOf("-")+1,inputs[i].length))
-        }
-    }
+    });
    return input_temp
 }
 function infodeal_2(input_temp){//输入数据处理2,把相同的商品归类到一起
-    var item_temp=[{barcode:input_temp[0].barcode,num:0}],flag;
-    for(var i=0;i<input_temp.length;i++){
-        flag=0;
-        for(var j=0;j<item_temp.length;j++){
-            if(item_temp[j].barcode==input_temp[i].barcode){
-              item_temp[j].num+=input_temp[i].num;
-              flag=1;
-            }
-        }
-        if(flag==0){
-            item_temp.push(input_temp[i])
-        }
-   }
+    var item_temp=[],temp=[];
+    temp=_.groupBy(input_temp,'barcode');//归类到一个总对象
+    item_temp=_.map(temp,function(n){
+        return{barcode:n[0].barcode,num:Number(_.sum(n,'num'))}
+    });
    return item_temp
 }
 function getgoodinfo(item_temp){//根据编码，提取商品信息
     var item=[];
     allItems = loadAllItems();
-    for(var i=0;i<item_temp.length;i++){
-        item[i]={barcode:allItems[0].barcode,//使用数据之前需要先定义，不然会报未定义
-                 name:allItems[0].name,unit:allItems[0].unit,price:allItems[0].price,num:item_temp[0].num,total:0}
-        for(var j=0;j<allItems.length;j++){
-            if(item_temp[i].barcode==allItems[j].barcode){
-                item[i].barcode=allItems[j].barcode;
-                item[i].name=allItems[j].name;
-                item[i].unit=allItems[j].unit;
-                item[i].price=allItems[j].price;
-                item[i].num=item_temp[i].num;
-            }
-        }
-    }
+    item=_.map(item_temp,function(n){
+        num=_.findIndex(allItems,'barcode',n.barcode)
+        temp=_.clone(allItems[num]);
+        temp.num=n.num;
+        temp.total=0;
+        return temp})
     return item;
 }
 function getsaved(item){
     allsaved=loadPromotions();
     var gift=[];//$.extend({}, item);
-    for(var i=0;i<item.length;i++){
-        gift[i]={barcode:item[i].barcode,//需要新建一个变量来获取原来变量的值，直接等于的话，两个变量是一个指针
-                 num:0,name:item[i].name,unit:item[i].unit};
-            for(var j=0;j<allsaved[0].barcodes.length;j++){
-                if(gift[i].barcode==allsaved[0].barcodes[j]){
-                    gift[i].num=parseInt(item[i].num/3);
-                }
-            }
-    }
+//    gift=_.map(item,function(n){
+//        num=_.indexOf(allsaved[0].barcodes,n.barcode)//不知道为什么这里_.findIndex用不了
+//        temp=_.clone(n);
+//        delete temp.total;
+//        if(num>0){
+//            temp.num=parseInt(n.num/3);
+//        }else{
+//            temp.num=0;
+//        }
+//        return temp;
+//    })//产生了一个顺序问题
     return gift;
 }
 function calprice(gift,item){
     var Receipt={total:0,saved:0,item,gift};
+    Receipt.item=_.map(item,function(n){
+
+    })
     for(var i=0;i<item.length;i++){
         Receipt.saved+=item[i].price*gift[i].num;
         item[i].price=item[i].price.toFixed(2);
