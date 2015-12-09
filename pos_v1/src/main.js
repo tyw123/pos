@@ -95,7 +95,7 @@ function calprice(gift,item){
 function print(Receipt){
     var result='***<没钱赚商店>购物清单***\n';
     formattedDateString=gettime();
-    result+='打印时间：' + formattedDateString + '\n';
+    //result+='打印时间：' + formattedDateString + '\n';
     for(var i=0;i<item.length;i++){
         result+='名称：'+Receipt.item[i].name+'，数量：'+Receipt.item[i].num+Receipt.item[i].unit+'，单价：'+Receipt.item[i].price+'(元)，小计：'+Receipt.item[i].total+'(元)\n' ;
     }
@@ -106,7 +106,7 @@ function print(Receipt){
            result+='名称：'+Receipt.gift[i].name+'，数量：'+Receipt.gift[i].num+Receipt.gift[i].unit+'\n';
         }
     }
-    result+='总计：'+Receipt.total+'(元)\n' +
+    result+= '----------------------\n' +'总计：'+Receipt.total+'(元)\n' +
                         '节省：'+Receipt.saved+'(元)\n' +
                         '**********************';
     return result;
