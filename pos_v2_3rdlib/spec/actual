@@ -1,0 +1,2 @@
+[ { barcode: 'ITEM000001', num: 1 },
+{ barcode: 'ITEM000001', num: 1 }, { barcode: 'ITEM000001', num: 1 }, { barcode: 'ITEM000001', num: 1 }, { barcode: 'ITEM000001', num: 1 }, { barcode: 'ITEM000003', num: 2 }, { barcode: 'ITEM000005', num: 3 }, { barcode: 'ITEM000005', num: 1 }, { barcode: 'ITEM000005', num: 1 }]
