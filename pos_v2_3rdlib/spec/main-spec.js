@@ -74,7 +74,7 @@ describe('pos', function () {
     it('getsaved', function () {
         inputs= [ { barcode: 'ITEM000001', name: '雪碧', unit: '瓶', price: 3, num: 5, total: 0 }, { barcode: 'ITEM000003', name: '荔枝', unit: '斤', price: 15, num: 2, total: 0 }, { barcode: 'ITEM000005', name: '方便面', unit: '袋', price: 4.5, num: 3, total: 0 } ];
         var item=getsaved(inputs);
-        var expectText =  [ { barcode: 'ITEM000001', num: 1, name: '雪碧', unit: '瓶' }, { barcode: 'ITEM000003', num: 0, name: '荔枝', unit: '斤' }, { barcode: 'ITEM000005', num: 1, name: '方便面', unit: '袋' } ] ;
+        var expectText =[ { barcode: 'ITEM000001', name: '雪碧', unit: '瓶', price: 3, num: 1 }, { barcode: 'ITEM000003', name: '荔枝', unit: '斤', price: 15, num: 0 }, { barcode: 'ITEM000005', name: '方便面', unit: '袋', price: 4.5, num: 1 } ] ;
         expect(item).toEqual(expectText);//如果是return就用toEqual
     });
     it('calprice', function () {

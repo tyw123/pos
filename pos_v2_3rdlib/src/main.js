@@ -33,24 +33,21 @@ function getgoodinfo(item_temp){//根据编码，提取商品信息
 function getsaved(item){
     allsaved=loadPromotions();
     var gift=[];//$.extend({}, item);
-//    gift=_.map(item,function(n){
-//        num=_.indexOf(allsaved[0].barcodes,n.barcode)//不知道为什么这里_.findIndex用不了
-//        temp=_.clone(n);
-//        delete temp.total;
-//        if(num>0){
-//            temp.num=parseInt(n.num/3);
-//        }else{
-//            temp.num=0;
-//        }
-//        return temp;
-//    })//产生了一个顺序问题
+    gift=_.map(item,function(n){
+        num=_.indexOf(allsaved[0].barcodes,n.barcode)//不知道为什么这里_.findIndex用不了
+        temp=_.clone(n);
+        delete temp.total;
+        if(num>0){
+            temp.num=parseInt(n.num/3);
+        }else{
+            temp.num=0;
+        }
+        return temp;
+    })//产生了一个顺序问题,功能上没有问题
     return gift;
 }
 function calprice(gift,item){
     var Receipt={total:0,saved:0,item,gift};
-    Receipt.item=_.map(item,function(n){
-
-    })
     for(var i=0;i<item.length;i++){
         Receipt.saved+=item[i].price*gift[i].num;
         item[i].price=item[i].price.toFixed(2);
